@@ -10,6 +10,8 @@ from src.models.classifier import BinaryClassifier
 from src.trainer import Trainer
 from src.utils import setup_logger, plot_training_curves
 
+# 可git更新维护调试
+
 def setup_logging(config):
     """配置日志系统"""
     log_dir = Path('logs')
