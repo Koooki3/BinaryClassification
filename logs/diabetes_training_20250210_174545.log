@@ -1,0 +1,48 @@
+2025-02-10 17:45:45,445 - __main__ - INFO - 开始训练diabetes数据集分类模型
+2025-02-10 17:45:45,488 - __main__ - INFO - 使用设备: cuda
+2025-02-10 17:45:45,500 - src.data.dataset - WARNING - 列 6 中发现 4 个异常值
+2025-02-10 17:45:45,503 - src.data.dataset - WARNING - 列 148 中发现 5 个异常值
+2025-02-10 17:45:45,507 - src.data.dataset - WARNING - 列 72 中发现 45 个异常值
+2025-02-10 17:45:45,510 - src.data.dataset - WARNING - 列 35 中发现 1 个异常值
+2025-02-10 17:45:45,513 - src.data.dataset - WARNING - 列 0 中发现 34 个异常值
+2025-02-10 17:45:45,517 - src.data.dataset - WARNING - 列 33.6 中发现 19 个异常值
+2025-02-10 17:45:45,524 - src.data.dataset - WARNING - 列 0.627 中发现 29 个异常值
+2025-02-10 17:45:45,530 - src.data.dataset - WARNING - 列 50 中发现 9 个异常值
+2025-02-10 17:45:45,693 - __main__ - INFO - 模型结构:
+BinaryClassifier(
+  (model): Sequential(
+    (0): Linear(in_features=8, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=64, out_features=32, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=32, out_features=1, bias=True)
+    (7): Sigmoid()
+  )
+)
+2025-02-10 17:45:45,694 - __main__ - INFO - 模型总参数量: 2689
+2025-02-10 17:45:45,694 - __main__ - INFO - 可训练参数量: 2689
+2025-02-10 17:45:46,994 - src.trainer - INFO - 开始训练...
+2025-02-10 17:45:47,736 - src.trainer - INFO - Epoch [1/100] Train Loss: 0.7254 Val Loss: 0.6409 Train Acc: 0.4845 Val Acc: 0.7013
+2025-02-10 17:45:47,879 - src.trainer - INFO - Epoch [2/100] Train Loss: 0.6220 Val Loss: 0.5810 Train Acc: 0.6852 Val Acc: 0.7013
+2025-02-10 17:45:47,989 - src.trainer - INFO - Epoch [3/100] Train Loss: 0.5668 Val Loss: 0.5506 Train Acc: 0.7341 Val Acc: 0.6948
+2025-02-10 17:45:48,140 - src.trainer - INFO - Epoch [4/100] Train Loss: 0.5364 Val Loss: 0.5329 Train Acc: 0.7406 Val Acc: 0.6818
+2025-02-10 17:45:48,268 - src.trainer - INFO - Epoch [5/100] Train Loss: 0.5282 Val Loss: 0.5244 Train Acc: 0.7569 Val Acc: 0.6818
+2025-02-10 17:45:48,353 - src.trainer - INFO - Epoch [6/100] Train Loss: 0.4707 Val Loss: 0.5210 Train Acc: 0.7667 Val Acc: 0.6948
+2025-02-10 17:45:48,453 - src.trainer - INFO - Epoch [7/100] Train Loss: 0.5152 Val Loss: 0.5152 Train Acc: 0.7700 Val Acc: 0.6948
+2025-02-10 17:45:48,573 - src.trainer - INFO - Epoch [8/100] Train Loss: 0.4585 Val Loss: 0.5078 Train Acc: 0.7945 Val Acc: 0.7013
+2025-02-10 17:45:48,715 - src.trainer - INFO - Epoch [9/100] Train Loss: 0.4597 Val Loss: 0.5094 Train Acc: 0.7896 Val Acc: 0.7078
+2025-02-10 17:45:48,827 - src.trainer - INFO - Epoch [10/100] Train Loss: 0.4542 Val Loss: 0.5105 Train Acc: 0.7847 Val Acc: 0.6948
+2025-02-10 17:45:48,945 - src.trainer - INFO - Epoch [11/100] Train Loss: 0.4740 Val Loss: 0.5125 Train Acc: 0.7732 Val Acc: 0.7013
+2025-02-10 17:45:49,070 - src.trainer - INFO - Epoch [12/100] Train Loss: 0.4629 Val Loss: 0.5130 Train Acc: 0.7945 Val Acc: 0.7013
+2025-02-10 17:45:49,167 - src.trainer - INFO - Epoch [13/100] Train Loss: 0.4817 Val Loss: 0.5141 Train Acc: 0.7879 Val Acc: 0.6948
+2025-02-10 17:45:49,269 - src.trainer - INFO - Epoch [14/100] Train Loss: 0.4622 Val Loss: 0.5177 Train Acc: 0.7945 Val Acc: 0.6883
+2025-02-10 17:45:49,359 - src.trainer - INFO - Epoch [15/100] Train Loss: 0.4570 Val Loss: 0.5185 Train Acc: 0.7977 Val Acc: 0.6883
+2025-02-10 17:45:49,460 - src.trainer - INFO - Epoch [16/100] Train Loss: 0.4467 Val Loss: 0.5201 Train Acc: 0.7928 Val Acc: 0.6883
+2025-02-10 17:45:49,586 - src.trainer - INFO - Epoch [17/100] Train Loss: 0.4451 Val Loss: 0.5275 Train Acc: 0.7798 Val Acc: 0.6818
+2025-02-10 17:45:49,688 - src.trainer - INFO - Epoch [18/100] Train Loss: 0.4419 Val Loss: 0.5287 Train Acc: 0.7977 Val Acc: 0.6818
+2025-02-10 17:45:49,689 - src.trainer - INFO - Early stopping triggered after 18 epochs
+2025-02-10 17:45:50,509 - src.models.classifier - INFO - 模型已保存到: models\diabetes_model_20250210_174550.pth
+2025-02-10 17:45:50,510 - __main__ - INFO - 最佳模型已保存至: models\diabetes_model_20250210_174550.pth
+2025-02-10 17:45:50,925 - __main__ - INFO - 训练程序完成

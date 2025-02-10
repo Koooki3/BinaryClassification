@@ -1,0 +1,19 @@
+2025-02-10 17:46:36,952 - evaluate - INFO - 开始模型评估
+2025-02-10 17:46:36,978 - evaluate - INFO - 使用设备: cuda
+2025-02-10 17:46:37,174 - evaluate - INFO - 模型加载成功
+2025-02-10 17:46:38,018 - evaluate - INFO - 
+分类报告：
+              precision    recall  f1-score   support
+
+     Class 0       0.74      0.79      0.76       100
+     Class 1       0.55      0.48      0.51        54
+
+    accuracy                           0.68       154
+   macro avg       0.65      0.64      0.64       154
+weighted avg       0.67      0.68      0.68       154
+
+2025-02-10 17:46:38,020 - evaluate - INFO - 
+混淆矩阵：
+[[79 21]
+ [28 26]]
+2025-02-10 17:46:38,020 - evaluate - INFO - 评估完成

@@ -1,0 +1,35 @@
+model:
+  type: "neural_network"
+  architecture: "simple_feedforward"
+  input_size: 8
+  hidden_layers:
+    - size: 64
+      activation: "relu"
+    - size: 32
+      activation: "relu"
+  output_size: 1
+  activation: "sigmoid"
+  dropout_rate: 0.2
+
+training:
+  batch_size: 32
+  learning_rate: 0.001
+  num_epochs: 100
+  loss_function: "BCELoss"
+  optimizer: "adam"
+  early_stopping_patience: 10
+
+data:
+  csv_file: "data/dataset.csv"
+  test_size: 0.2
+  random_seed: 42
+
+logging:
+  log_file: "logs/training.log"
+  log_level: "INFO"
+
+dataset:
+  input_size: 8
+  batch_size: 32
+  train_ratio: 0.8
+  random_seed: 42
