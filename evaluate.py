@@ -4,13 +4,13 @@ import torch
 import numpy as np
 import logging
 from pathlib import Path
-from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 from src.data.dataset import DataProcessor
-from src.models.classifier import BinaryClassifier
+from src.models.classifier import RainfallPredictor
 from src.utils import setup_logger
 
 def load_config():
@@ -22,17 +22,26 @@ def load_config():
     except Exception as e:
         raise RuntimeError(f"无法加载配置文件: {str(e)}")
 
-def plot_confusion_matrix(cm, save_path):
-    """绘制混淆矩阵"""
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-    plt.title('混淆矩阵')
-    plt.ylabel('真实标签')
-    plt.xlabel('预测标签')
-    plt.savefig(save_path)
+def plot_prediction_scatter(y_true, y_pred, save_path):
+    """绘制预测值与真实值的散点图"""
+    plt.figure(figsize=(10, 6))
+    
+    # 设置中文字体
+    plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+    plt.rcParams['axes.unicode_minus'] = False     # 用来正常显示负号
+    
+    plt.scatter(y_true, y_pred, alpha=0.5)
+    plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', lw=2)
+    plt.xlabel('真实降水量 (mm)')
+    plt.ylabel('预测降水量 (mm)')
+    plt.title('降水量预测值与真实值对比')
+    plt.grid(True)
+    
+    # 保存图片
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
 
-def evaluate_model(model, test_loader, device):
+def evaluate_model(model, test_loader, device, scaler_y=None):
     """评估模型性能"""
     model.eval()
     all_preds = []
@@ -42,12 +51,68 @@ def evaluate_model(model, test_loader, device):
         for inputs, labels in test_loader:
             inputs, labels = inputs.to(device), labels.to(device)
             outputs = model(inputs)
-            preds = (outputs > 0.5).float()
             
-            all_preds.extend(preds.cpu().numpy())
+            all_preds.extend(outputs.cpu().numpy())
             all_labels.extend(labels.cpu().numpy())
     
-    return np.array(all_preds), np.array(all_labels)
+    predictions = np.array(all_preds)
+    labels = np.array(all_labels)
+    
+    # 如果使用了标准化，需要转换回原始刻度
+    if scaler_y is not None:
+        predictions = scaler_y.inverse_transform(predictions.reshape(-1, 1)).flatten()
+        labels = scaler_y.inverse_transform(labels.reshape(-1, 1)).flatten()
+    
+    return predictions, labels
+
+def calculate_metrics(y_true, y_pred):
+    """计算评估指标"""
+    mse = mean_squared_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+    
+    return {
+        'MSE': mse,
+        'RMSE': rmse,
+        'MAE': mae,
+        'R2': r2
+    }
+
+def setup_logging(config):
+    """配置日志系统"""
+    log_dir = Path('logs')
+    log_dir.mkdir(exist_ok=True)
+    
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_file = log_dir / f'evaluate_{timestamp}.log'
+    
+    # 修正日志格式字符串
+    formatter = logging.Formatter(
+        fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # 修改 levellevel 为 levelname
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    
+    # 文件处理器
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
+    file_handler.setFormatter(formatter)
+    
+    # 控制台处理器
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    
+    # 配置根日志记录器
+    logger = logging.getLogger()
+    logger.setLevel(config['logging']['log_level'])
+    
+    # 清除现有的处理器
+    logger.handlers.clear()
+    
+    # 添加新的处理器
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+    
+    return logger
 
 def main():
     try:
@@ -55,17 +120,9 @@ def main():
         config = load_config()
         
         # 设置日志
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        log_dir = Path('logs')
-        log_dir.mkdir(exist_ok=True)
+        logger = setup_logging(config)
         
-        logger = setup_logger(
-            name='evaluate',
-            log_file=log_dir / f'evaluation_{timestamp}.log',
-            level=logging.INFO
-        )
-        
-        logger.info("开始模型评估")
+        logger.info("开始降水量预测模型评估")
         
         # 设置设备
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -81,46 +138,78 @@ def main():
             logger.error("数据预处理失败")
             return
         
-        _, test_loader = data_processor.create_data_loaders()
+        train_loader, valid_loader, test_loader = data_processor.create_data_loaders()
+        if test_loader is None:
+            logger.error("创建数据加载器失败")
+            return
         
-        # 加载模型
-        model = BinaryClassifier(config['model']).to(device)
-        
-        # 修改文件名以评估不同的模型
-        model_path = Path("models/diabetes_model_20250210_174550.pth")
+        # 加载已训练的模型
+        model_path = Path("models/rainfall_model_latest.pth")
         
         if not model_path.exists():
             logger.error(f"模型文件不存在: {model_path}")
             return
         
-        model.load_model(model_path)
-        logger.info("模型加载成功")
+        # 加载模型数据
+        checkpoint = torch.load(model_path)
+        
+        # 更新模型配置
+        config.update(checkpoint['config'])
+        
+        # 重新初始化模型（使用更新后的配置）
+        model = RainfallPredictor(config['model']).to(device)
+        
+        # 加载模型状态
+        model.load_state_dict(checkpoint['model_state_dict'])
+        
+        # 更新数据处理器的缩放器
+        data_processor.scaler_X = checkpoint['scaler_X']
+        data_processor.scaler_y = checkpoint['scaler_y']
+        
+        logger.info("模型和数据处理器加载成功")
         
         # 评估模型
-        predictions, labels = evaluate_model(model, test_loader, device)
+        predictions, labels = evaluate_model(
+            model, 
+            test_loader, 
+            device, 
+            data_processor.scaler_y
+        )
         
         # 计算评估指标
-        report = classification_report(labels, predictions, target_names=['Class 0', 'Class 1'])
-        cm = confusion_matrix(labels, predictions)
+        metrics = calculate_metrics(labels, predictions)
+        
+        # 生成时间戳
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         
         # 保存评估结果
         results_dir = Path('results')
         results_dir.mkdir(exist_ok=True)
         
-        # 保存混淆矩阵图
-        plot_confusion_matrix(
-            cm, 
-            results_dir / f'confusion_matrix_{timestamp}.png'
+        # 保存预测散点图
+        plot_prediction_scatter(
+            labels,
+            predictions,
+            results_dir / f'prediction_scatter_{timestamp}.png'
         )
         
         # 保存评估报告
-        with open(results_dir / f'evaluation_report_{timestamp}.txt', 'w') as f:
+        report = (
+            f"降水量预测模型评估报告\n"
+            f"评估时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+            f"评估指标:\n"
+            f"MSE (均方误差): {metrics['MSE']:.4f}\n"
+            f"RMSE (均方根误差): {metrics['RMSE']:.4f} mm\n"
+            f"MAE (平均绝对误差): {metrics['MAE']:.4f} mm\n"
+            f"R² (决定系数): {metrics['R2']:.4f}\n"
+        )
+        
+        # 使用 utf-8 编码写入文件
+        with open(results_dir / f'rainfall_evaluation_{timestamp}.txt', 'w', encoding='utf-8') as f:
             f.write(report)
         
         # 输出评估结果
-        logger.info("\n分类报告：\n" + report)
-        logger.info("\n混淆矩阵：\n" + str(cm))
-        
+        logger.info("\n" + report)
         logger.info("评估完成")
         
     except Exception as e:

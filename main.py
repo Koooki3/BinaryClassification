@@ -6,11 +6,16 @@ import numpy as np
 from pathlib import Path
 from datetime import datetime
 from src.data.dataset import DataProcessor
-from src.models.classifier import BinaryClassifier
+from src.models.classifier import RainfallPredictor
 from src.trainer import Trainer
-from src.utils import setup_logger, plot_training_curves
-
-# 可git更新维护调试
+from src.utils import (
+    setup_logger,
+    save_metrics,
+    plot_training_curves,
+    plot_prediction_scatter,
+    plot_residuals,
+    evaluate_regression_model
+)
 
 def setup_logging(config):
     """配置日志系统"""
@@ -18,13 +23,13 @@ def setup_logging(config):
     log_dir.mkdir(exist_ok=True)
     
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_file = log_dir / f'diabetes_training_{timestamp}.log'
+    log_file = log_dir / f'{timestamp}.log'
     
     logging.basicConfig(
         level=config['logging']['log_level'],
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(log_file),
+            logging.FileHandler(log_file, encoding='utf-8'),
             logging.StreamHandler()
         ]
     )
@@ -36,9 +41,7 @@ def load_config():
         config_path = Path("config/config.yaml")
         with open(config_path, 'r', encoding='utf-8') as config_file:
             config = yaml.safe_load(config_file)
-            
-            # 确保配置文件中包含数据集的路径
-            config['data']['csv_file'] = 'data/dataset.csv'
+            config['data']['csv_file'] = 'data/datasetMeteostat_广州.csv'
             return config
     except Exception as e:
         raise RuntimeError(f"无法加载配置文件: {str(e)}")
@@ -52,51 +55,43 @@ def setup_seed(seed):
 
 def get_user_input():
     """获取用户输入的预测参数"""
-    print("\n=== 糖尿病预测指标输入 ===")
-    print("\n请依次输入以下8个指标值（用空格分隔）：")
-    print("\n1. 怀孕次数")
-    print("   - 范围: 0-17次")
-    print("   - 说明: 患者怀孕的次数")
+    print("\n=== 降水量预测指标输入 ===")
+    print("\n请依次输入以下6个指标值（用空格分隔）：")
+    print("\n1. 平均温度")
+    print("   - 范围: 5-35°C")
+    print("   - 说明: 当日平均气温")
     
-    print("\n2. 口服葡萄糖耐量试验中血浆葡萄糖浓度")
-    print("   - 范围: 0-199 mg/dL")
-    print("   - 说明: 葡萄糖耐量试验2小时后的血糖水平")
+    print("\n2. 最低温度")
+    print("   - 范围: 0-30°C")
+    print("   - 说明: 当日最低气温")
     
-    print("\n3. 血压")
-    print("   - 范围: 0-122 mmHg")
-    print("   - 说明: 舒张压（确保数值准确）")
+    print("\n3. 最高温度")
+    print("   - 范围: 10-40°C")
+    print("   - 说明: 当日最高气温")
     
-    print("\n4. 肱三头肌皮褶厚度")
-    print("   - 范围: 0-99 mm")
-    print("   - 说明: 反映体内脂肪含量的指标")
+    print("\n4. 风向")
+    print("   - 范围: 0-360度")
+    print("   - 说明: 风向角度（0表示北风）")
     
-    print("\n5. 血清胰岛素")
-    print("   - 范围: 0-846 mu U/ml")
-    print("   - 说明: 2小时血清胰岛素水平")
+    print("\n5. 风速")
+    print("   - 范围: 0-50 km/h")
+    print("   - 说明: 平均风速")
     
-    print("\n6. 体重指数(BMI)")
-    print("   - 范围: 0-67.1 kg/m²")
-    print("   - 说明: 体重(kg)/身高(m)的平方")
+    print("\n6. 气压")
+    print("   - 范围: 990-1020 hPa")
+    print("   - 说明: 海平面气压")
     
-    print("\n7. 糖尿病家族遗传系数")
-    print("   - 范围: 0.078-2.42")
-    print("   - 说明: 基于家族史计算的遗传影响系数")
+    print("\n示例输入：20 15 25 180 10 1013")
     
-    print("\n8. 年龄")
-    print("   - 范围: 21-81岁")
-    print("   - 说明: 患者的实际年龄")
-    
-    print("\n示例输入：6 148 72 35 0 33.6 0.627 50")
-    
-    ranges = [(0, 17), (0, 199), (0, 122), (0, 99),
-              (0, 846), (0, 67.1), (0.078, 2.42), (21, 81)]
+    ranges = [(5, 35), (0, 30), (10, 40), (0, 360),
+              (0, 50), (990, 1020)]
     
     while True:
         try:
-            values = input("\n请输入这8个指标值 > ").strip().split()
+            values = input("\n请输入这6个指标值 > ").strip().split()
             
-            if len(values) != 8:
-                print("错误：必须输入8个数值！请重试。")
+            if len(values) != 6:
+                print("错误：必须输入6个数值！请重试。")
                 continue
             
             features = []
@@ -124,10 +119,9 @@ def predict_sample(model, features, device, scaler=None):
     model.eval()
     with torch.no_grad():
         output = model(features_tensor)
-        probability = output.item()
-        prediction = 1 if probability > 0.5 else 0
+        prediction = output.item()
         
-    return prediction, probability
+    return prediction
 
 def main():
     try:
@@ -139,7 +133,7 @@ def main():
         
         # 设置日志
         logger = setup_logging(config)
-        logger.info("开始训练diabetes数据集分类模型")
+        logger.info("开始训练广州降水量预测模型")
         
         # 设置设备
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -150,7 +144,7 @@ def main():
         
         # 加载并预处理数据
         if not data_processor.load_data():
-            logger.error("diabetes数据集加载失败")
+            logger.error("气象数据集加载失败")
             return
         
         if not data_processor.preprocess_data():
@@ -158,26 +152,44 @@ def main():
             return
         
         # 创建数据加载器
-        train_loader, test_loader = data_processor.create_data_loaders()
+        train_loader, valid_loader, test_loader = data_processor.create_data_loaders()
         if train_loader is None:
             logger.error("创建数据加载器失败")
             return
+
+        # 创建必要的目录
+        dirs_to_create = {
+            'models_dir': Path('models'),
+            'results_dir': Path('results'),
+            'plots_dir': Path('plots'),
+            'logs_dir': Path('logs')
+        }
+
+        for dir_path in dirs_to_create.values():
+            dir_path.mkdir(parents=True, exist_ok=True)
+
+        # 更新配置中的路径
+        if 'paths' not in config:
+            config['paths'] = {}
+        config['paths'].update({
+            'models_dir': str(dirs_to_create['models_dir']),
+            'results_dir': str(dirs_to_create['results_dir']),
+            'plots_dir': str(dirs_to_create['plots_dir']),
+            'logs_dir': str(dirs_to_create['logs_dir'])
+        })
         
         # 初始化模型
-        model = BinaryClassifier(config['model']).to(device)
+        model = RainfallPredictor(config['model']).to(device)
         logger.info(f"模型结构:\n{model}")
-        
-        # 获取并记录模型信息
-        model_info = model.get_model_info()
-        logger.info(f"模型总参数量: {model_info['total_params']}")
-        logger.info(f"可训练参数量: {model_info['trainable_params']}")
         
         # 初始化训练器
         trainer = Trainer(
             model=model,
-            config=config['training'],
+            training_config=config['training'],
+            full_config=config,  # 传递完整配置
             device=device,
             train_loader=train_loader,
+            valid_loader=valid_loader,
             test_loader=test_loader
         )
         
@@ -186,48 +198,77 @@ def main():
         
         # 保存最佳模型
         if best_model is not None:
-            save_dir = Path('models')
-            save_dir.mkdir(exist_ok=True)
-            
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            model_path = save_dir / f'diabetes_model_{timestamp}.pth'
+            models_dir = Path(config['paths']['models_dir'])
             
-            # 保存模型
-            if best_model.save_model(model_path):
-                logger.info(f"最佳模型已保存至: {model_path}")
-            else:
-                logger.error("模型保存失败")
+            # 准备保存的模型数据
+            model_data = {
+                'model_state_dict': best_model.state_dict(),
+                'config': config,
+                'scaler_X': data_processor.scaler_X,
+                'scaler_y': data_processor.scaler_y
+            }
+            
+            # 保存带时间戳的版本
+            timestamp_path = models_dir / f'rainfall_model_{timestamp}.pth'
+            torch.save(model_data, timestamp_path)
+            logger.info(f"带时间戳的模型已保存至: {timestamp_path}")
+            
+            # 保存最新版本
+            latest_path = models_dir / 'rainfall_model_latest.pth'
+            torch.save(model_data, latest_path)
+            logger.info(f"最新模型已保存至: {latest_path}")
         
         # 绘制训练曲线
-        plot_training_curves(
-            trainer.metrics,
-            save_path=f'logs/diabetes_training_curves_{timestamp}.png'
-        )
+        plots_path = Path(config['paths']['plots_dir']) / f'training_curves_{timestamp}.png'
+        plot_training_curves(trainer.metrics, save_path=plots_path)
+        
+        # 保存训练指标
+        metrics_path = Path(config['paths']['results_dir']) / f'training_metrics_{timestamp}.json'
+        save_metrics(trainer.metrics, metrics_path)
         
         logger.info("训练程序完成")
         
         # 添加交互式预测功能
-        print("\n=== 模型预测功能 ===")
-        print("训练完成！是否要进行预测？")
-        
+        print("\n=== 降水量预测功能 ===")
         while input("\n是否进行预测？(y/n) > ").strip().lower() == 'y':
             features = get_user_input()
-            prediction, probability = predict_sample(
+            predicted_rainfall = predict_sample(
                 best_model, 
                 features, 
                 device, 
-                data_processor.scaler
+                data_processor.scaler_X
             )
             
+            # 将预测值转换回原始刻度
+            predicted_rainfall = data_processor.scaler_y.inverse_transform(
+                [[predicted_rainfall]]
+            )[0][0]
+            
+            if config['data']['scaler']['target_transform'] == 'log1p':
+                predicted_rainfall = np.expm1(predicted_rainfall)
+            
             print("\n===== 预测结果 =====")
-            if prediction == 1:
-                print("预测结果：可能患有糖尿病")
-                print(f"患病概率：{probability:.2%}")
+            print(f"预测降水量：{predicted_rainfall:.2f} mm")
+            
+            # 根据降水量判断天气状况
+            if predicted_rainfall < 0.1:
+                print("天气状况：晴朗")
+                print("建议：适合户外活动")
+            elif predicted_rainfall < 10:
+                print("天气状况：小雨")
+                print("建议：外出请携带雨伞")
+            elif predicted_rainfall < 25:
+                print("天气状况：中雨")
+                print("建议：尽量避免户外活动")
+            elif predicted_rainfall < 50:
+                print("天气状况：大雨")
+                print("建议：注意防范积水和交通安全")
             else:
-                print("预测结果：健康")
-                print(f"健康概率：{(1-probability):.2%}")
+                print("天气状况：暴雨")
+                print("建议：密切关注天气预警，做好防汛准备")
         
-        print("\n感谢使用糖尿病预测系统！")
+        print("\n感谢使用广州降水量预测系统！")
         
     except Exception as e:
         logger.exception(f"程序运行出错: {str(e)}")

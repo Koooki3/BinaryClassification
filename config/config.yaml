@@ -1,35 +1,58 @@
 model:
-  type: "neural_network"
-  architecture: "simple_feedforward"
-  input_size: 8
+  type: "rainfall_predictor"
+  architecture: "feedforward"
+  input_size: 6  # 6个输入特征: tavg, tmin, tmax, wdir, wspd, pres
   hidden_layers:
+    - size: 128
+      activation: "relu"
     - size: 64
       activation: "relu"
     - size: 32
       activation: "relu"
-  output_size: 1
-  activation: "sigmoid"
-  dropout_rate: 0.2
+  output_size: 1  # 预测降水量
+  activation: "linear"  # 回归任务使用线性输出
+  dropout_rate: 0.3    # 增加dropout防止过拟合
+  batch_norm: true     # 添加批归一化
 
 training:
-  batch_size: 32
+  batch_size: 64       # 增加批量大小
   learning_rate: 0.001
-  num_epochs: 100
-  loss_function: "BCELoss"
+  num_epochs: 200      # 增加训练轮数
+  loss_function: "MSELoss"
   optimizer: "adam"
-  early_stopping_patience: 10
+  early_stopping_patience: 20  # 增加早停耐心值
+  lr_scheduler:        # 添加学习率调度器
+    type: "ReduceLROnPlateau"
+    patience: 10
+    factor: 0.5
+    min_lr: 0.00001
 
 data:
-  csv_file: "data/dataset.csv"
+  csv_file: "data/datasetMeteostat_广州.csv"
   test_size: 0.2
+  valid_size: 0.1     # 添加验证集比例
   random_seed: 42
+  target_column: "prcp"
+  feature_columns: ["tavg", "tmin", "tmax", "wdir", "wspd", "pres"]
+  scaler:
+    type: "StandardScaler"  # 数据标准化方法
+    target_transform: "log1p"  # 对降水量进行对数转换
+
+paths:
+  data_dir: "data"
+  models_dir: "models"
+  results_dir: "results"
+  plots_dir: "plots"
+  logs_dir: "logs"
 
 logging:
-  log_file: "logs/training.log"
+  log_dir: "logs"
   log_level: "INFO"
 
-dataset:
-  input_size: 8
-  batch_size: 32
-  train_ratio: 0.8
-  random_seed: 42
+visualization:
+  plots_dir: "plots"
+  plot_types:
+    - "loss_curve"
+    - "prediction_scatter"
+    - "residual_plot"
+    - "feature_importance"

@@ -1,1 +1,5 @@
-from .classifier import BinaryClassifier
+from .classifier import RainfallPredictor
+
+__all__ = [
+    'RainfallPredictor'
+]

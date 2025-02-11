@@ -1,8 +1,8 @@
-# PyTorch Binary Classification
+# PyTorch Rainfall Prediction
 
-This repository contains code and resources for building and training binary classification models using PyTorch.
+This repository contains code and resources for building and training rainfall prediction models using PyTorch.
 
-本仓库包含使用 PyTorch 构建和训练二分类模型的代码和资源。
+本仓库包含使用 PyTorch 构建和训练降水量预测模型的代码和资源。
 
 ## Table of Contents / 目录
 - [Introduction / 简介](#introduction--简介)
@@ -11,9 +11,9 @@ This repository contains code and resources for building and training binary cla
 - [Contributing / 贡献](#contributing--贡献)
 
 ## Introduction / 简介
-Binary classification is a type of classification task that outputs one of two possible classes. This project demonstrates how to implement binary classification models using PyTorch.
+Rainfall prediction is a type of regression task that outputs the expected amount of rainfall. This project demonstrates how to implement rainfall prediction models using PyTorch.
 
-二分类是输出两个可能类别之一的分类任务。本项目演示了如何使用 PyTorch 实现二分类模型。
+降水量预测是一种回归任务，输出预期的降水量。本项目演示了如何使用 PyTorch 实现降水量预测模型。
 
 ## Installation / 安装
 To get started, clone the repository and install the required dependencies:
@@ -21,22 +21,34 @@ To get started, clone the repository and install the required dependencies:
 首先，克隆仓库并安装所需的依赖项：
 
 ```bash
-git clone https://github.com/Koooki3/pytorch-binary-classification.git
-cd pytorch-binary-classification
+git clone https://github.com/Koooki3/PyTorch-Rainfall-Prediction.git
+cd PyTorch-Rainfall-Prediction
 pip install -r requirements.txt
 ```
 
 ## Usage / 使用方法
-To train and test a binary classification model, run the following command:
+### Data Preparation / 数据准备
+To fetch and preprocess the weather data, run the following command:
 
-要训练并用具体数据测试二分类模型，请运行以下命令：
+要获取和预处理天气数据，请运行以下命令：
 
 ```bash
-python train.py
+python getData.py
 ```
-You can also evaluate the model using:
 
-您还可以使用以下命令评估模型：
+### Training / 训练
+To train and use the latest rainfall prediction model, run the following command:
+
+要训练并在终端开始使用降水量预测模型，请运行以下命令：
+
+```bash
+python main.py
+```
+
+### Evaluation / 评估
+To evaluate the trained model, run the following command:
+
+要评估训练好的模型，请运行以下命令：
 
 ```bash
 python evaluate.py

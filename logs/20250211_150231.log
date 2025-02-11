@@ -1,0 +1,165 @@
+2025-02-11 15:02:31,714 - __main__ - INFO - 开始训练广州降水量预测模型
+2025-02-11 15:02:31,742 - __main__ - INFO - 使用设备: cuda
+2025-02-11 15:02:31,761 - src.data.dataset - WARNING - 列 tmax 中发现 26 个异常值
+2025-02-11 15:02:31,773 - src.data.dataset - WARNING - 列 wspd 中发现 330 个异常值
+2025-02-11 15:02:31,777 - src.data.dataset - WARNING - 列 pres 中发现 39 个异常值
+2025-02-11 15:02:31,781 - src.data.dataset - INFO - 对降水量进行了对数转换
+2025-02-11 15:02:31,958 - __main__ - INFO - 模型结构:
+RainfallPredictor(
+  (model): Sequential(
+    (0): Linear(in_features=6, out_features=128, bias=True)
+    (1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Dropout(p=0.3, inplace=False)
+    (4): Linear(in_features=128, out_features=64, bias=True)
+    (5): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (6): ReLU()
+    (7): Dropout(p=0.3, inplace=False)
+    (8): Linear(in_features=64, out_features=32, bias=True)
+    (9): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (10): ReLU()
+    (11): Dropout(p=0.3, inplace=False)
+    (12): Linear(in_features=32, out_features=1, bias=True)
+  )
+)
+2025-02-11 15:02:33,165 - src.trainer - INFO - 开始训练...
+2025-02-11 15:02:34,048 - src.trainer - INFO - Epoch [1/200] Train Loss: 1.5039 Val Loss: 0.7791 Train RMSE: 1.2147 Val RMSE: 0.8888 Train R²: -0.4518 Val R²: 0.1942
+2025-02-11 15:02:34,495 - src.trainer - INFO - Epoch [2/200] Train Loss: 1.1377 Val Loss: 0.7839 Train RMSE: 1.0684 Val RMSE: 0.8923 Train R²: -0.1231 Val R²: 0.1878
+2025-02-11 15:02:34,967 - src.trainer - INFO - Epoch [3/200] Train Loss: 1.0125 Val Loss: 0.7619 Train RMSE: 1.0085 Val RMSE: 0.8807 Train R²: -0.0007 Val R²: 0.2088
+2025-02-11 15:02:35,407 - src.trainer - INFO - Epoch [4/200] Train Loss: 0.9398 Val Loss: 0.7402 Train RMSE: 0.9722 Val RMSE: 0.8706 Train R²: 0.0702 Val R²: 0.2267
+2025-02-11 15:02:35,777 - src.trainer - INFO - Epoch [5/200] Train Loss: 0.9344 Val Loss: 0.7448 Train RMSE: 0.9664 Val RMSE: 0.8730 Train R²: 0.0811 Val R²: 0.2224
+2025-02-11 15:02:36,136 - src.trainer - INFO - Epoch [6/200] Train Loss: 0.9034 Val Loss: 0.7356 Train RMSE: 0.9522 Val RMSE: 0.8681 Train R²: 0.1080 Val R²: 0.2312
+2025-02-11 15:02:36,518 - src.trainer - INFO - Epoch [7/200] Train Loss: 0.8932 Val Loss: 0.7358 Train RMSE: 0.9408 Val RMSE: 0.8690 Train R²: 0.1292 Val R²: 0.2297
+2025-02-11 15:02:36,927 - src.trainer - INFO - Epoch [8/200] Train Loss: 0.8578 Val Loss: 0.7230 Train RMSE: 0.9285 Val RMSE: 0.8616 Train R²: 0.1518 Val R²: 0.2427
+2025-02-11 15:02:37,431 - src.trainer - INFO - Epoch [9/200] Train Loss: 0.8553 Val Loss: 0.7214 Train RMSE: 0.9243 Val RMSE: 0.8607 Train R²: 0.1595 Val R²: 0.2443
+2025-02-11 15:02:37,893 - src.trainer - INFO - Epoch [10/200] Train Loss: 0.8376 Val Loss: 0.7153 Train RMSE: 0.9189 Val RMSE: 0.8568 Train R²: 0.1692 Val R²: 0.2511
+2025-02-11 15:02:37,908 - src.trainer - INFO - 检查点已保存到: models\model_epoch_10.pth
+2025-02-11 15:02:38,296 - src.trainer - INFO - Epoch [11/200] Train Loss: 0.8356 Val Loss: 0.7100 Train RMSE: 0.9133 Val RMSE: 0.8546 Train R²: 0.1793 Val R²: 0.2550
+2025-02-11 15:02:38,687 - src.trainer - INFO - Epoch [12/200] Train Loss: 0.8326 Val Loss: 0.7007 Train RMSE: 0.9093 Val RMSE: 0.8499 Train R²: 0.1865 Val R²: 0.2631
+2025-02-11 15:02:39,104 - src.trainer - INFO - Epoch [13/200] Train Loss: 0.8142 Val Loss: 0.7062 Train RMSE: 0.9037 Val RMSE: 0.8522 Train R²: 0.1965 Val R²: 0.2592
+2025-02-11 15:02:39,547 - src.trainer - INFO - Epoch [14/200] Train Loss: 0.8264 Val Loss: 0.7056 Train RMSE: 0.9063 Val RMSE: 0.8516 Train R²: 0.1919 Val R²: 0.2602
+2025-02-11 15:02:39,942 - src.trainer - INFO - Epoch [15/200] Train Loss: 0.7912 Val Loss: 0.6904 Train RMSE: 0.8926 Val RMSE: 0.8444 Train R²: 0.2161 Val R²: 0.2725
+2025-02-11 15:02:40,340 - src.trainer - INFO - Epoch [16/200] Train Loss: 0.8053 Val Loss: 0.7061 Train RMSE: 0.8960 Val RMSE: 0.8516 Train R²: 0.2102 Val R²: 0.2602
+2025-02-11 15:02:40,766 - src.trainer - INFO - Epoch [17/200] Train Loss: 0.7960 Val Loss: 0.6957 Train RMSE: 0.8939 Val RMSE: 0.8462 Train R²: 0.2139 Val R²: 0.2695
+2025-02-11 15:02:41,127 - src.trainer - INFO - Epoch [18/200] Train Loss: 0.7900 Val Loss: 0.6882 Train RMSE: 0.8862 Val RMSE: 0.8430 Train R²: 0.2273 Val R²: 0.2751
+2025-02-11 15:02:41,520 - src.trainer - INFO - Epoch [19/200] Train Loss: 0.8011 Val Loss: 0.6867 Train RMSE: 0.8936 Val RMSE: 0.8419 Train R²: 0.2143 Val R²: 0.2769
+2025-02-11 15:02:41,887 - src.trainer - INFO - Epoch [20/200] Train Loss: 0.7825 Val Loss: 0.6811 Train RMSE: 0.8862 Val RMSE: 0.8386 Train R²: 0.2273 Val R²: 0.2826
+2025-02-11 15:02:41,893 - src.trainer - INFO - 检查点已保存到: models\model_epoch_20.pth
+2025-02-11 15:02:42,262 - src.trainer - INFO - Epoch [21/200] Train Loss: 0.7890 Val Loss: 0.6882 Train RMSE: 0.8872 Val RMSE: 0.8419 Train R²: 0.2256 Val R²: 0.2770
+2025-02-11 15:02:42,661 - src.trainer - INFO - Epoch [22/200] Train Loss: 0.7780 Val Loss: 0.6900 Train RMSE: 0.8830 Val RMSE: 0.8419 Train R²: 0.2329 Val R²: 0.2769
+2025-02-11 15:02:43,025 - src.trainer - INFO - Epoch [23/200] Train Loss: 0.7739 Val Loss: 0.6821 Train RMSE: 0.8809 Val RMSE: 0.8370 Train R²: 0.2366 Val R²: 0.2853
+2025-02-11 15:02:43,426 - src.trainer - INFO - Epoch [24/200] Train Loss: 0.7866 Val Loss: 0.6760 Train RMSE: 0.8842 Val RMSE: 0.8344 Train R²: 0.2308 Val R²: 0.2897
+2025-02-11 15:02:43,814 - src.trainer - INFO - Epoch [25/200] Train Loss: 0.7751 Val Loss: 0.6731 Train RMSE: 0.8793 Val RMSE: 0.8326 Train R²: 0.2393 Val R²: 0.2928
+2025-02-11 15:02:44,204 - src.trainer - INFO - Epoch [26/200] Train Loss: 0.7635 Val Loss: 0.6660 Train RMSE: 0.8731 Val RMSE: 0.8287 Train R²: 0.2499 Val R²: 0.2994
+2025-02-11 15:02:44,692 - src.trainer - INFO - Epoch [27/200] Train Loss: 0.7659 Val Loss: 0.6684 Train RMSE: 0.8754 Val RMSE: 0.8303 Train R²: 0.2461 Val R²: 0.2967
+2025-02-11 15:02:45,058 - src.trainer - INFO - Epoch [28/200] Train Loss: 0.7757 Val Loss: 0.6756 Train RMSE: 0.8831 Val RMSE: 0.8345 Train R²: 0.2328 Val R²: 0.2896
+2025-02-11 15:02:45,435 - src.trainer - INFO - Epoch [29/200] Train Loss: 0.7749 Val Loss: 0.6856 Train RMSE: 0.8810 Val RMSE: 0.8393 Train R²: 0.2363 Val R²: 0.2814
+2025-02-11 15:02:45,851 - src.trainer - INFO - Epoch [30/200] Train Loss: 0.7686 Val Loss: 0.6769 Train RMSE: 0.8786 Val RMSE: 0.8351 Train R²: 0.2406 Val R²: 0.2885
+2025-02-11 15:02:46,229 - src.trainer - INFO - Epoch [31/200] Train Loss: 0.7799 Val Loss: 0.6689 Train RMSE: 0.8782 Val RMSE: 0.8319 Train R²: 0.2413 Val R²: 0.2940
+2025-02-11 15:02:46,602 - src.trainer - INFO - Epoch [32/200] Train Loss: 0.7646 Val Loss: 0.6624 Train RMSE: 0.8724 Val RMSE: 0.8270 Train R²: 0.2512 Val R²: 0.3023
+2025-02-11 15:02:46,981 - src.trainer - INFO - Epoch [33/200] Train Loss: 0.7501 Val Loss: 0.6663 Train RMSE: 0.8672 Val RMSE: 0.8298 Train R²: 0.2602 Val R²: 0.2976
+2025-02-11 15:02:47,378 - src.trainer - INFO - Epoch [34/200] Train Loss: 0.7442 Val Loss: 0.6699 Train RMSE: 0.8628 Val RMSE: 0.8330 Train R²: 0.2676 Val R²: 0.2922
+2025-02-11 15:02:47,753 - src.trainer - INFO - Epoch [35/200] Train Loss: 0.7604 Val Loss: 0.6607 Train RMSE: 0.8693 Val RMSE: 0.8269 Train R²: 0.2564 Val R²: 0.3025
+2025-02-11 15:02:48,123 - src.trainer - INFO - Epoch [36/200] Train Loss: 0.7668 Val Loss: 0.6608 Train RMSE: 0.8690 Val RMSE: 0.8265 Train R²: 0.2571 Val R²: 0.3031
+2025-02-11 15:02:48,497 - src.trainer - INFO - Epoch [37/200] Train Loss: 0.7446 Val Loss: 0.6575 Train RMSE: 0.8642 Val RMSE: 0.8255 Train R²: 0.2653 Val R²: 0.3049
+2025-02-11 15:02:48,871 - src.trainer - INFO - Epoch [38/200] Train Loss: 0.7553 Val Loss: 0.6522 Train RMSE: 0.8686 Val RMSE: 0.8229 Train R²: 0.2578 Val R²: 0.3091
+2025-02-11 15:02:49,252 - src.trainer - INFO - Epoch [39/200] Train Loss: 0.7488 Val Loss: 0.6527 Train RMSE: 0.8648 Val RMSE: 0.8239 Train R²: 0.2642 Val R²: 0.3075
+2025-02-11 15:02:49,681 - src.trainer - INFO - Epoch [40/200] Train Loss: 0.7478 Val Loss: 0.6488 Train RMSE: 0.8615 Val RMSE: 0.8222 Train R²: 0.2698 Val R²: 0.3104
+2025-02-11 15:02:49,690 - src.trainer - INFO - 检查点已保存到: models\model_epoch_40.pth
+2025-02-11 15:02:50,067 - src.trainer - INFO - Epoch [41/200] Train Loss: 0.7448 Val Loss: 0.6504 Train RMSE: 0.8632 Val RMSE: 0.8226 Train R²: 0.2669 Val R²: 0.3097
+2025-02-11 15:02:50,451 - src.trainer - INFO - Epoch [42/200] Train Loss: 0.7416 Val Loss: 0.6438 Train RMSE: 0.8593 Val RMSE: 0.8186 Train R²: 0.2735 Val R²: 0.3164
+2025-02-11 15:02:50,859 - src.trainer - INFO - Epoch [43/200] Train Loss: 0.7450 Val Loss: 0.6487 Train RMSE: 0.8625 Val RMSE: 0.8211 Train R²: 0.2681 Val R²: 0.3121
+2025-02-11 15:02:51,310 - src.trainer - INFO - Epoch [44/200] Train Loss: 0.7326 Val Loss: 0.6521 Train RMSE: 0.8572 Val RMSE: 0.8238 Train R²: 0.2771 Val R²: 0.3077
+2025-02-11 15:02:51,733 - src.trainer - INFO - Epoch [45/200] Train Loss: 0.7445 Val Loss: 0.6507 Train RMSE: 0.8629 Val RMSE: 0.8222 Train R²: 0.2675 Val R²: 0.3104
+2025-02-11 15:02:52,138 - src.trainer - INFO - Epoch [46/200] Train Loss: 0.7411 Val Loss: 0.6490 Train RMSE: 0.8628 Val RMSE: 0.8223 Train R²: 0.2677 Val R²: 0.3101
+2025-02-11 15:02:52,524 - src.trainer - INFO - Epoch [47/200] Train Loss: 0.7350 Val Loss: 0.6455 Train RMSE: 0.8554 Val RMSE: 0.8201 Train R²: 0.2801 Val R²: 0.3138
+2025-02-11 15:02:52,905 - src.trainer - INFO - Epoch [48/200] Train Loss: 0.7371 Val Loss: 0.6488 Train RMSE: 0.8590 Val RMSE: 0.8205 Train R²: 0.2741 Val R²: 0.3133
+2025-02-11 15:02:53,286 - src.trainer - INFO - Epoch [49/200] Train Loss: 0.7449 Val Loss: 0.6427 Train RMSE: 0.8577 Val RMSE: 0.8198 Train R²: 0.2763 Val R²: 0.3145
+2025-02-11 15:02:53,685 - src.trainer - INFO - Epoch [50/200] Train Loss: 0.7381 Val Loss: 0.6424 Train RMSE: 0.8591 Val RMSE: 0.8175 Train R²: 0.2738 Val R²: 0.3183
+2025-02-11 15:02:53,693 - src.trainer - INFO - 检查点已保存到: models\model_epoch_50.pth
+2025-02-11 15:02:54,077 - src.trainer - INFO - Epoch [51/200] Train Loss: 0.7288 Val Loss: 0.6537 Train RMSE: 0.8536 Val RMSE: 0.8225 Train R²: 0.2831 Val R²: 0.3098
+2025-02-11 15:02:54,473 - src.trainer - INFO - Epoch [52/200] Train Loss: 0.7432 Val Loss: 0.6534 Train RMSE: 0.8603 Val RMSE: 0.8225 Train R²: 0.2718 Val R²: 0.3098
+2025-02-11 15:02:54,853 - src.trainer - INFO - Epoch [53/200] Train Loss: 0.7439 Val Loss: 0.6519 Train RMSE: 0.8567 Val RMSE: 0.8237 Train R²: 0.2778 Val R²: 0.3078
+2025-02-11 15:02:55,237 - src.trainer - INFO - Epoch [54/200] Train Loss: 0.7515 Val Loss: 0.6507 Train RMSE: 0.8637 Val RMSE: 0.8224 Train R²: 0.2661 Val R²: 0.3100
+2025-02-11 15:02:55,603 - src.trainer - INFO - Epoch [55/200] Train Loss: 0.7395 Val Loss: 0.6485 Train RMSE: 0.8584 Val RMSE: 0.8227 Train R²: 0.2750 Val R²: 0.3096
+2025-02-11 15:02:55,986 - src.trainer - INFO - Epoch [56/200] Train Loss: 0.7401 Val Loss: 0.6472 Train RMSE: 0.8555 Val RMSE: 0.8189 Train R²: 0.2799 Val R²: 0.3159
+2025-02-11 15:02:56,412 - src.trainer - INFO - Epoch [57/200] Train Loss: 0.7337 Val Loss: 0.6526 Train RMSE: 0.8515 Val RMSE: 0.8223 Train R²: 0.2867 Val R²: 0.3101
+2025-02-11 15:02:56,789 - src.trainer - INFO - Epoch [58/200] Train Loss: 0.7328 Val Loss: 0.6511 Train RMSE: 0.8507 Val RMSE: 0.8227 Train R²: 0.2879 Val R²: 0.3095
+2025-02-11 15:02:57,160 - src.trainer - INFO - Epoch [59/200] Train Loss: 0.7276 Val Loss: 0.6415 Train RMSE: 0.8501 Val RMSE: 0.8177 Train R²: 0.2890 Val R²: 0.3179
+2025-02-11 15:02:57,583 - src.trainer - INFO - Epoch [60/200] Train Loss: 0.7369 Val Loss: 0.6513 Train RMSE: 0.8579 Val RMSE: 0.8214 Train R²: 0.2758 Val R²: 0.3117
+2025-02-11 15:02:57,993 - src.trainer - INFO - Epoch [61/200] Train Loss: 0.7334 Val Loss: 0.6491 Train RMSE: 0.8515 Val RMSE: 0.8214 Train R²: 0.2867 Val R²: 0.3117
+2025-02-11 15:02:58,374 - src.trainer - INFO - Epoch [62/200] Train Loss: 0.7206 Val Loss: 0.6461 Train RMSE: 0.8510 Val RMSE: 0.8202 Train R²: 0.2875 Val R²: 0.3138
+2025-02-11 15:02:58,738 - src.trainer - INFO - Epoch [63/200] Train Loss: 0.7161 Val Loss: 0.6500 Train RMSE: 0.8486 Val RMSE: 0.8223 Train R²: 0.2914 Val R²: 0.3101
+2025-02-11 15:02:59,101 - src.trainer - INFO - Epoch [64/200] Train Loss: 0.7254 Val Loss: 0.6468 Train RMSE: 0.8506 Val RMSE: 0.8208 Train R²: 0.2882 Val R²: 0.3127
+2025-02-11 15:02:59,477 - src.trainer - INFO - Epoch [65/200] Train Loss: 0.7203 Val Loss: 0.6424 Train RMSE: 0.8505 Val RMSE: 0.8191 Train R²: 0.2883 Val R²: 0.3155
+2025-02-11 15:02:59,900 - src.trainer - INFO - Epoch [66/200] Train Loss: 0.7162 Val Loss: 0.6485 Train RMSE: 0.8407 Val RMSE: 0.8216 Train R²: 0.3047 Val R²: 0.3113
+2025-02-11 15:03:00,286 - src.trainer - INFO - Epoch [67/200] Train Loss: 0.7126 Val Loss: 0.6386 Train RMSE: 0.8476 Val RMSE: 0.8167 Train R²: 0.2932 Val R²: 0.3196
+2025-02-11 15:03:00,647 - src.trainer - INFO - Epoch [68/200] Train Loss: 0.7025 Val Loss: 0.6459 Train RMSE: 0.8407 Val RMSE: 0.8214 Train R²: 0.3046 Val R²: 0.3117
+2025-02-11 15:03:01,023 - src.trainer - INFO - Epoch [69/200] Train Loss: 0.7208 Val Loss: 0.6454 Train RMSE: 0.8518 Val RMSE: 0.8207 Train R²: 0.2861 Val R²: 0.3129
+2025-02-11 15:03:01,388 - src.trainer - INFO - Epoch [70/200] Train Loss: 0.7294 Val Loss: 0.6466 Train RMSE: 0.8504 Val RMSE: 0.8205 Train R²: 0.2885 Val R²: 0.3132
+2025-02-11 15:03:01,758 - src.trainer - INFO - Epoch [71/200] Train Loss: 0.7227 Val Loss: 0.6431 Train RMSE: 0.8535 Val RMSE: 0.8194 Train R²: 0.2833 Val R²: 0.3151
+2025-02-11 15:03:02,182 - src.trainer - INFO - Epoch [72/200] Train Loss: 0.7087 Val Loss: 0.6415 Train RMSE: 0.8440 Val RMSE: 0.8185 Train R²: 0.2992 Val R²: 0.3166
+2025-02-11 15:03:02,578 - src.trainer - INFO - Epoch [73/200] Train Loss: 0.7213 Val Loss: 0.6336 Train RMSE: 0.8445 Val RMSE: 0.8165 Train R²: 0.2983 Val R²: 0.3199
+2025-02-11 15:03:02,963 - src.trainer - INFO - Epoch [74/200] Train Loss: 0.7179 Val Loss: 0.6342 Train RMSE: 0.8454 Val RMSE: 0.8147 Train R²: 0.2969 Val R²: 0.3229
+2025-02-11 15:03:03,348 - src.trainer - INFO - Epoch [75/200] Train Loss: 0.7118 Val Loss: 0.6363 Train RMSE: 0.8456 Val RMSE: 0.8145 Train R²: 0.2966 Val R²: 0.3232
+2025-02-11 15:03:03,719 - src.trainer - INFO - Epoch [76/200] Train Loss: 0.7111 Val Loss: 0.6419 Train RMSE: 0.8426 Val RMSE: 0.8190 Train R²: 0.3015 Val R²: 0.3158
+2025-02-11 15:03:04,095 - src.trainer - INFO - Epoch [77/200] Train Loss: 0.7056 Val Loss: 0.6424 Train RMSE: 0.8397 Val RMSE: 0.8191 Train R²: 0.3063 Val R²: 0.3156
+2025-02-11 15:03:04,468 - src.trainer - INFO - Epoch [78/200] Train Loss: 0.7177 Val Loss: 0.6487 Train RMSE: 0.8462 Val RMSE: 0.8221 Train R²: 0.2955 Val R²: 0.3106
+2025-02-11 15:03:04,842 - src.trainer - INFO - Epoch [79/200] Train Loss: 0.7074 Val Loss: 0.6361 Train RMSE: 0.8425 Val RMSE: 0.8155 Train R²: 0.3016 Val R²: 0.3216
+2025-02-11 15:03:05,216 - src.trainer - INFO - Epoch [80/200] Train Loss: 0.7265 Val Loss: 0.6440 Train RMSE: 0.8511 Val RMSE: 0.8191 Train R²: 0.2873 Val R²: 0.3156
+2025-02-11 15:03:05,602 - src.trainer - INFO - Epoch [81/200] Train Loss: 0.7121 Val Loss: 0.6422 Train RMSE: 0.8419 Val RMSE: 0.8196 Train R²: 0.3026 Val R²: 0.3148
+2025-02-11 15:03:05,992 - src.trainer - INFO - Epoch [82/200] Train Loss: 0.7156 Val Loss: 0.6430 Train RMSE: 0.8467 Val RMSE: 0.8209 Train R²: 0.2947 Val R²: 0.3125
+2025-02-11 15:03:06,360 - src.trainer - INFO - Epoch [83/200] Train Loss: 0.7165 Val Loss: 0.6499 Train RMSE: 0.8451 Val RMSE: 0.8242 Train R²: 0.2973 Val R²: 0.3069
+2025-02-11 15:03:06,735 - src.trainer - INFO - Epoch [84/200] Train Loss: 0.7183 Val Loss: 0.6498 Train RMSE: 0.8458 Val RMSE: 0.8235 Train R²: 0.2962 Val R²: 0.3082
+2025-02-11 15:03:07,097 - src.trainer - INFO - Epoch [85/200] Train Loss: 0.7196 Val Loss: 0.6455 Train RMSE: 0.8438 Val RMSE: 0.8216 Train R²: 0.2995 Val R²: 0.3114
+2025-02-11 15:03:07,467 - src.trainer - INFO - Epoch [86/200] Train Loss: 0.7080 Val Loss: 0.6386 Train RMSE: 0.8429 Val RMSE: 0.8189 Train R²: 0.3010 Val R²: 0.3159
+2025-02-11 15:03:07,952 - src.trainer - INFO - Epoch [87/200] Train Loss: 0.7005 Val Loss: 0.6420 Train RMSE: 0.8369 Val RMSE: 0.8207 Train R²: 0.3109 Val R²: 0.3130
+2025-02-11 15:03:08,368 - src.trainer - INFO - Epoch [88/200] Train Loss: 0.7139 Val Loss: 0.6331 Train RMSE: 0.8422 Val RMSE: 0.8142 Train R²: 0.3022 Val R²: 0.3237
+2025-02-11 15:03:08,731 - src.trainer - INFO - Epoch [89/200] Train Loss: 0.7087 Val Loss: 0.6355 Train RMSE: 0.8410 Val RMSE: 0.8163 Train R²: 0.3042 Val R²: 0.3203
+2025-02-11 15:03:09,100 - src.trainer - INFO - Epoch [90/200] Train Loss: 0.7082 Val Loss: 0.6388 Train RMSE: 0.8420 Val RMSE: 0.8170 Train R²: 0.3024 Val R²: 0.3190
+2025-02-11 15:03:09,471 - src.trainer - INFO - Epoch [91/200] Train Loss: 0.7090 Val Loss: 0.6381 Train RMSE: 0.8440 Val RMSE: 0.8188 Train R²: 0.2991 Val R²: 0.3161
+2025-02-11 15:03:09,832 - src.trainer - INFO - Epoch [92/200] Train Loss: 0.7121 Val Loss: 0.6368 Train RMSE: 0.8418 Val RMSE: 0.8166 Train R²: 0.3028 Val R²: 0.3197
+2025-02-11 15:03:10,254 - src.trainer - INFO - Epoch [93/200] Train Loss: 0.7121 Val Loss: 0.6366 Train RMSE: 0.8374 Val RMSE: 0.8172 Train R²: 0.3101 Val R²: 0.3188
+2025-02-11 15:03:10,617 - src.trainer - INFO - Epoch [94/200] Train Loss: 0.6954 Val Loss: 0.6356 Train RMSE: 0.8333 Val RMSE: 0.8177 Train R²: 0.3167 Val R²: 0.3179
+2025-02-11 15:03:10,984 - src.trainer - INFO - Epoch [95/200] Train Loss: 0.6987 Val Loss: 0.6372 Train RMSE: 0.8354 Val RMSE: 0.8179 Train R²: 0.3134 Val R²: 0.3175
+2025-02-11 15:03:11,344 - src.trainer - INFO - Epoch [96/200] Train Loss: 0.7074 Val Loss: 0.6401 Train RMSE: 0.8432 Val RMSE: 0.8190 Train R²: 0.3005 Val R²: 0.3158
+2025-02-11 15:03:11,714 - src.trainer - INFO - Epoch [97/200] Train Loss: 0.7133 Val Loss: 0.6366 Train RMSE: 0.8430 Val RMSE: 0.8175 Train R²: 0.3008 Val R²: 0.3183
+2025-02-11 15:03:12,073 - src.trainer - INFO - Epoch [98/200] Train Loss: 0.6964 Val Loss: 0.6379 Train RMSE: 0.8356 Val RMSE: 0.8181 Train R²: 0.3130 Val R²: 0.3172
+2025-02-11 15:03:12,439 - src.trainer - INFO - Epoch [99/200] Train Loss: 0.6999 Val Loss: 0.6412 Train RMSE: 0.8369 Val RMSE: 0.8190 Train R²: 0.3108 Val R²: 0.3157
+2025-02-11 15:03:12,829 - src.trainer - INFO - Epoch [100/200] Train Loss: 0.7123 Val Loss: 0.6403 Train RMSE: 0.8374 Val RMSE: 0.8195 Train R²: 0.3100 Val R²: 0.3148
+2025-02-11 15:03:13,189 - src.trainer - INFO - Epoch [101/200] Train Loss: 0.6923 Val Loss: 0.6359 Train RMSE: 0.8344 Val RMSE: 0.8184 Train R²: 0.3151 Val R²: 0.3167
+2025-02-11 15:03:13,598 - src.trainer - INFO - Epoch [102/200] Train Loss: 0.7107 Val Loss: 0.6395 Train RMSE: 0.8377 Val RMSE: 0.8187 Train R²: 0.3096 Val R²: 0.3161
+2025-02-11 15:03:13,967 - src.trainer - INFO - Epoch [103/200] Train Loss: 0.6961 Val Loss: 0.6328 Train RMSE: 0.8348 Val RMSE: 0.8149 Train R²: 0.3144 Val R²: 0.3225
+2025-02-11 15:03:14,344 - src.trainer - INFO - Epoch [104/200] Train Loss: 0.7013 Val Loss: 0.6364 Train RMSE: 0.8378 Val RMSE: 0.8180 Train R²: 0.3095 Val R²: 0.3174
+2025-02-11 15:03:14,720 - src.trainer - INFO - Epoch [105/200] Train Loss: 0.7013 Val Loss: 0.6415 Train RMSE: 0.8395 Val RMSE: 0.8198 Train R²: 0.3067 Val R²: 0.3145
+2025-02-11 15:03:15,088 - src.trainer - INFO - Epoch [106/200] Train Loss: 0.6955 Val Loss: 0.6355 Train RMSE: 0.8358 Val RMSE: 0.8175 Train R²: 0.3128 Val R²: 0.3182
+2025-02-11 15:03:15,448 - src.trainer - INFO - Epoch [107/200] Train Loss: 0.7149 Val Loss: 0.6500 Train RMSE: 0.8425 Val RMSE: 0.8241 Train R²: 0.3017 Val R²: 0.3072
+2025-02-11 15:03:15,826 - src.trainer - INFO - Epoch [108/200] Train Loss: 0.7027 Val Loss: 0.6408 Train RMSE: 0.8409 Val RMSE: 0.8196 Train R²: 0.3043 Val R²: 0.3147
+2025-02-11 15:03:16,193 - src.trainer - INFO - Epoch [109/200] Train Loss: 0.6943 Val Loss: 0.6363 Train RMSE: 0.8328 Val RMSE: 0.8191 Train R²: 0.3176 Val R²: 0.3155
+2025-02-11 15:03:16,560 - src.trainer - INFO - Epoch [110/200] Train Loss: 0.6819 Val Loss: 0.6450 Train RMSE: 0.8294 Val RMSE: 0.8220 Train R²: 0.3232 Val R²: 0.3107
+2025-02-11 15:03:16,917 - src.trainer - INFO - Epoch [111/200] Train Loss: 0.6829 Val Loss: 0.6391 Train RMSE: 0.8286 Val RMSE: 0.8200 Train R²: 0.3245 Val R²: 0.3140
+2025-02-11 15:03:17,287 - src.trainer - INFO - Epoch [112/200] Train Loss: 0.7023 Val Loss: 0.6325 Train RMSE: 0.8381 Val RMSE: 0.8161 Train R²: 0.3089 Val R²: 0.3206
+2025-02-11 15:03:17,665 - src.trainer - INFO - Epoch [113/200] Train Loss: 0.6960 Val Loss: 0.6403 Train RMSE: 0.8337 Val RMSE: 0.8202 Train R²: 0.3161 Val R²: 0.3138
+2025-02-11 15:03:18,039 - src.trainer - INFO - Epoch [114/200] Train Loss: 0.6945 Val Loss: 0.6407 Train RMSE: 0.8330 Val RMSE: 0.8195 Train R²: 0.3174 Val R²: 0.3149
+2025-02-11 15:03:18,423 - src.trainer - INFO - Epoch [115/200] Train Loss: 0.7004 Val Loss: 0.6332 Train RMSE: 0.8383 Val RMSE: 0.8155 Train R²: 0.3085 Val R²: 0.3216
+2025-02-11 15:03:18,788 - src.trainer - INFO - Epoch [116/200] Train Loss: 0.6993 Val Loss: 0.6388 Train RMSE: 0.8340 Val RMSE: 0.8202 Train R²: 0.3156 Val R²: 0.3137
+2025-02-11 15:03:19,193 - src.trainer - INFO - Epoch [117/200] Train Loss: 0.7056 Val Loss: 0.6446 Train RMSE: 0.8396 Val RMSE: 0.8238 Train R²: 0.3064 Val R²: 0.3076
+2025-02-11 15:03:19,656 - src.trainer - INFO - Epoch [118/200] Train Loss: 0.6918 Val Loss: 0.6384 Train RMSE: 0.8334 Val RMSE: 0.8193 Train R²: 0.3167 Val R²: 0.3152
+2025-02-11 15:03:20,061 - src.trainer - INFO - Epoch [119/200] Train Loss: 0.7041 Val Loss: 0.6389 Train RMSE: 0.8384 Val RMSE: 0.8186 Train R²: 0.3085 Val R²: 0.3164
+2025-02-11 15:03:20,518 - src.trainer - INFO - Epoch [120/200] Train Loss: 0.6956 Val Loss: 0.6328 Train RMSE: 0.8340 Val RMSE: 0.8153 Train R²: 0.3157 Val R²: 0.3219
+2025-02-11 15:03:20,903 - src.trainer - INFO - Epoch [121/200] Train Loss: 0.7049 Val Loss: 0.6388 Train RMSE: 0.8392 Val RMSE: 0.8202 Train R²: 0.3072 Val R²: 0.3137
+2025-02-11 15:03:21,270 - src.trainer - INFO - Epoch [122/200] Train Loss: 0.6890 Val Loss: 0.6350 Train RMSE: 0.8307 Val RMSE: 0.8185 Train R²: 0.3210 Val R²: 0.3166
+2025-02-11 15:03:21,655 - src.trainer - INFO - Epoch [123/200] Train Loss: 0.6838 Val Loss: 0.6433 Train RMSE: 0.8258 Val RMSE: 0.8220 Train R²: 0.3291 Val R²: 0.3107
+2025-02-11 15:03:22,045 - src.trainer - INFO - Epoch [124/200] Train Loss: 0.6883 Val Loss: 0.6391 Train RMSE: 0.8322 Val RMSE: 0.8173 Train R²: 0.3186 Val R²: 0.3186
+2025-02-11 15:03:22,428 - src.trainer - INFO - Epoch [125/200] Train Loss: 0.6974 Val Loss: 0.6492 Train RMSE: 0.8327 Val RMSE: 0.8245 Train R²: 0.3178 Val R²: 0.3066
+2025-02-11 15:03:22,814 - src.trainer - INFO - Epoch [126/200] Train Loss: 0.7037 Val Loss: 0.6336 Train RMSE: 0.8384 Val RMSE: 0.8162 Train R²: 0.3085 Val R²: 0.3203
+2025-02-11 15:03:23,228 - src.trainer - INFO - Epoch [127/200] Train Loss: 0.6923 Val Loss: 0.6382 Train RMSE: 0.8328 Val RMSE: 0.8189 Train R²: 0.3177 Val R²: 0.3159
+2025-02-11 15:03:23,621 - src.trainer - INFO - Epoch [128/200] Train Loss: 0.6984 Val Loss: 0.6402 Train RMSE: 0.8365 Val RMSE: 0.8199 Train R²: 0.3116 Val R²: 0.3142
+2025-02-11 15:03:24,007 - src.trainer - INFO - Epoch [129/200] Train Loss: 0.6937 Val Loss: 0.6393 Train RMSE: 0.8335 Val RMSE: 0.8196 Train R²: 0.3164 Val R²: 0.3147
+2025-02-11 15:03:24,380 - src.trainer - INFO - Epoch [130/200] Train Loss: 0.6932 Val Loss: 0.6430 Train RMSE: 0.8325 Val RMSE: 0.8220 Train R²: 0.3181 Val R²: 0.3107
+2025-02-11 15:03:24,767 - src.trainer - INFO - Epoch [131/200] Train Loss: 0.7011 Val Loss: 0.6375 Train RMSE: 0.8315 Val RMSE: 0.8186 Train R²: 0.3197 Val R²: 0.3163
+2025-02-11 15:03:25,195 - src.trainer - INFO - Epoch [132/200] Train Loss: 0.6986 Val Loss: 0.6382 Train RMSE: 0.8373 Val RMSE: 0.8184 Train R²: 0.3102 Val R²: 0.3166
+2025-02-11 15:03:25,195 - src.trainer - INFO - Early stopping triggered after 132 epochs
+2025-02-11 15:03:26,582 - __main__ - INFO - 带时间戳的模型已保存至: models\rainfall_model_20250211_150326.pth
+2025-02-11 15:03:26,590 - __main__ - INFO - 最新模型已保存至: models\rainfall_model_latest.pth
+2025-02-11 15:03:27,737 - __main__ - INFO - 训练程序完成
